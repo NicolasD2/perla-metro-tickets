@@ -16,7 +16,7 @@ export class CreateTicketDto {
   passengerId: string;
 
   @IsDateString()
-  issuedDate: string;
+  Date: string;
 
   @IsEnum(TicketType)
   type: TicketType;

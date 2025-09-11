@@ -4,12 +4,14 @@ exports.Ticket = void 0;
 class Ticket {
     id;
     passengerId;
+    passengerName;
     date;
     type;
     status;
     paid;
     createdAt;
     updatedAt;
+    deletedAt;
 }
 exports.Ticket = Ticket;
 //# sourceMappingURL=ticket.entity.js.map

@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const tickets_service_1 = require("./tickets.service");
 const create_ticket_dto_1 = require("./Dto/create-ticket.dto");
 const ticket_entity_1 = require("./entities/ticket.entity");
+const update_ticket_dto_1 = require("./Dto/update-ticket.dto");
 let TicketsController = class TicketsController {
     ticketsService;
     constructor(ticketsService) {
@@ -25,11 +26,17 @@ let TicketsController = class TicketsController {
     create(createTicketDto) {
         return this.ticketsService.create(createTicketDto);
     }
-    findAll() {
-        return this.ticketsService.findAll();
+    findAll(admin) {
+        return this.ticketsService.findAll(admin === 'true');
     }
     findById(id) {
         return this.ticketsService.findById(id);
+    }
+    update(id, dto) {
+        return this.ticketsService.update(id, dto);
+    }
+    softDelete(id, admin) {
+        return this.ticketsService.softDelete(id, admin === 'true');
     }
 };
 exports.TicketsController = TicketsController;
@@ -42,8 +49,9 @@ __decorate([
 ], TicketsController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('admin')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Array)
 ], TicketsController.prototype, "findAll", null);
 __decorate([
@@ -53,6 +61,22 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Object)
 ], TicketsController.prototype, "findById", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_ticket_dto_1.UpdateTicketDto]),
+    __metadata("design:returntype", ticket_entity_1.Ticket)
+], TicketsController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)('admin')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Boolean)
+], TicketsController.prototype, "softDelete", null);
 exports.TicketsController = TicketsController = __decorate([
     (0, common_1.Controller)('tickets'),
     __metadata("design:paramtypes", [tickets_service_1.TicketsService])

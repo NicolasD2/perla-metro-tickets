@@ -4,4 +4,7 @@ export declare class TicketsRepository {
     create(ticket: Ticket): Ticket;
     findAll(): Ticket[];
     findById(id: string): Ticket | undefined;
+    findDuplicate(passengerId: string, date: string): Ticket | undefined;
+    update(id: string, updatedFields: Partial<Ticket>): Ticket | undefined;
+    softDelete(id: string): boolean;
 }

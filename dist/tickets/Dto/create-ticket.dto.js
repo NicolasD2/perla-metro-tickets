@@ -24,7 +24,7 @@ var TicketStatus;
 })(TicketStatus || (exports.TicketStatus = TicketStatus = {}));
 class CreateTicketDto {
     passengerId;
-    Date;
+    date;
     type;
     status;
     paid;
@@ -37,7 +37,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsDateString)(),
     __metadata("design:type", String)
-], CreateTicketDto.prototype, "Date", void 0);
+], CreateTicketDto.prototype, "date", void 0);
 __decorate([
     (0, class_validator_1.IsEnum)(TicketType),
     __metadata("design:type", String)

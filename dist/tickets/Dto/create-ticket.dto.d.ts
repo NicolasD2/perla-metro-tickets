@@ -9,7 +9,7 @@ export declare enum TicketStatus {
 }
 export declare class CreateTicketDto {
     passengerId: string;
-    Date: string;
+    date: string;
     type: TicketType;
     status: TicketStatus;
     paid: number;

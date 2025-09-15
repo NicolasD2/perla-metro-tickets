@@ -53,11 +53,27 @@ export class TicketsService {
 
   async update(id: string, dto: UpdateTicketDto): Promise<Ticket> {
     const ticket = await this.ticketModel.findById(id).exec();
-    if (!ticket || ticket.deletedAt) throw new NotFoundException('Ticket no encontrado');
+    
+    if (!ticket || ticket.deletedAt){
+      throw new NotFoundException('Ticket no encontrado');
+    } 
     
     if (dto.status && !['active', 'used', 'expired'].includes(dto.status)) {
       throw new BadRequestException('Estado de ticket inválido.');
     }
+
+    if(dto.type && !['single', 'return'].includes(dto.type)) {
+      throw new BadRequestException('Tipo de ticket inválido.');
+    }
+
+    if(dto.paid !== undefined && (typeof dto.paid !== 'number' || dto.paid <= 0)) {
+      throw new BadRequestException('El monto pagado debe ser un número positivo.');
+    }
+
+    if(dto.status === 'used' && ticket.status === 'expired') {
+      throw new BadRequestException('No se puede cambiar el estado de un ticket expirado a usado.');
+    }
+
     Object.assign(ticket, dto, { updatedAt: new Date() });
     return ticket.save();
 

@@ -8,5 +8,5 @@ export class Ticket {
   paid: number;
   createdAt: Date;
   updatedAt: Date;
-  deletedAt?: string;
+  deletedAt?: Date;
 }

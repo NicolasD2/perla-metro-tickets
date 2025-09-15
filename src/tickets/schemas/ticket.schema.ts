@@ -20,7 +20,7 @@ export class Ticket extends Document {
   paid: number;
 
   @Prop({ default: null })
-  deletedAt: Date | null;
+  deletedAt?: Date | null;
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);

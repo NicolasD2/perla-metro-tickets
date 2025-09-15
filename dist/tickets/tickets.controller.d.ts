@@ -5,9 +5,9 @@ import { UpdateTicketDto } from './Dto/update-ticket.dto';
 export declare class TicketsController {
     private readonly ticketsService;
     constructor(ticketsService: TicketsService);
-    create(createTicketDto: CreateTicketDto): Ticket;
-    findAll(admin: string): Ticket[];
-    findById(id: string): Partial<Ticket>;
-    update(id: string, dto: UpdateTicketDto): Ticket;
-    softDelete(id: string, admin: string): boolean;
+    create(createTicketDto: CreateTicketDto): Promise<Ticket>;
+    findAll(admin: string): Promise<Ticket[]>;
+    findById(id: string): Promise<Partial<Ticket>>;
+    update(id: string, dto: UpdateTicketDto): Promise<Ticket>;
+    softDelete(id: string, admin: string): Promise<boolean>;
 }

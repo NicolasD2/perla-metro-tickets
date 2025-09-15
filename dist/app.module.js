@@ -11,12 +11,13 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const tickets_module_1 = require("./tickets/tickets.module");
+const mongoose_1 = require("@nestjs/mongoose");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [tickets_module_1.TicketsModule],
+        imports: [mongoose_1.MongooseModule.forRoot('mongodb://localhost/perla-metro-tickets'), tickets_module_1.TicketsModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

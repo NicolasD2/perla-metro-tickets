@@ -19,8 +19,8 @@ export class Ticket extends Document {
   @Prop({ required: true })
   paid: number;
 
-  @Prop({ default: null })
-  deletedAt?: Date | null;
+  @Prop({ type: Date,default: null })
+  deletedAt?: Date;
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);

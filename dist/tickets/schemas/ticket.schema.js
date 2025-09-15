@@ -15,7 +15,7 @@ const mongoose_2 = require("mongoose");
 const create_ticket_dto_1 = require("../Dto/create-ticket.dto");
 let Ticket = class Ticket extends mongoose_2.Document {
     passengerId;
-    Date;
+    date;
     type;
     status;
     paid;
@@ -29,7 +29,7 @@ __decorate([
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", Date)
-], Ticket.prototype, "Date", void 0);
+], Ticket.prototype, "date", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true, enum: create_ticket_dto_1.TicketType }),
     __metadata("design:type", String)
@@ -43,12 +43,12 @@ __decorate([
     __metadata("design:type", Number)
 ], Ticket.prototype, "paid", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ default: null }),
-    __metadata("design:type", Object)
+    (0, mongoose_1.Prop)({ type: Date, default: null }),
+    __metadata("design:type", Date)
 ], Ticket.prototype, "deletedAt", void 0);
 exports.Ticket = Ticket = __decorate([
     (0, mongoose_1.Schema)()
 ], Ticket);
 exports.TicketSchema = mongoose_1.SchemaFactory.createForClass(Ticket);
-exports.TicketSchema.index({ passengerId: 1, Date: 1, type: 1 }, { unique: true, partialFilterExpression: { deletedAt: null } });
+exports.TicketSchema.index({ passengerId: 1, date: 1, type: 1 }, { unique: true, partialFilterExpression: { deletedAt: null } });
 //# sourceMappingURL=ticket.schema.js.map

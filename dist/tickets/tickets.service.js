@@ -8,86 +8,75 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TicketsService = void 0;
 const common_1 = require("@nestjs/common");
-const tickets_repository_1 = require("./tickets.repository");
+const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_2 = require("mongoose");
+const ticket_entity_1 = require("./entities/ticket.entity");
 const ticket_util_1 = require("./Util/ticket.util");
 let TicketsService = class TicketsService {
-    ticketsRepository;
-    constructor(ticketsRepository) {
-        this.ticketsRepository = ticketsRepository;
+    ticketModel;
+    constructor(ticketModel) {
+        this.ticketModel = ticketModel;
     }
-    create(createTicketDto) {
-        if (this.ticketsRepository.findDuplicate(createTicketDto.passengerId, createTicketDto.date)) {
-            throw new Error('Ya existe un ticket para este pasajero en la misma fecha.');
-        }
-        const now = new Date().toISOString();
-        const ticket = { id: Math.random().toString(36).substring(2, 10),
+    async create(createTicketDto) {
+        const duplicate = await this.ticketModel.findOne({
             passengerId: createTicketDto.passengerId,
-            passengerName: (0, ticket_util_1.getPassengerName)(createTicketDto.passengerId),
             date: createTicketDto.date,
-            type: createTicketDto.type,
-            status: createTicketDto.status,
-            paid: createTicketDto.paid,
-            createdAt: new Date(now),
-            updatedAt: new Date(now)
-        };
-        return this.ticketsRepository.create(ticket);
+            deletedAt: { $exists: false }
+        });
+        if (duplicate)
+            throw new common_1.BadRequestException('Ya existe un ticket para este pasajero en la misma fecha.');
+        const ticket = new this.ticketModel({
+            ...createTicketDto,
+            passengerName: (0, ticket_util_1.getPassengerName)(createTicketDto.passengerId),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
+        return ticket.save();
     }
-    findAll(isAdmin) {
+    async findAll(isAdmin) {
         if (!isAdmin)
             throw new common_1.ForbiddenException('Acceso denegado. Solo administradores pueden ver todos los tickets.');
-        return this.ticketsRepository.findAll().map(t => ({
-            id: t.id,
-            passengerId: t.passengerId,
-            passengerName: t.passengerName,
-            date: t.date,
-            type: t.type,
-            status: t.status,
-            paid: t.paid,
-            createdAt: t.createdAt,
-            updatedAt: t.updatedAt,
-            deletedAt: t.deletedAt
-        }));
+        return this.ticketModel.find({ deletedAt: { $exists: false } }).exec();
     }
-    findById(id) {
-        const ticket = this.ticketsRepository.findById(id);
-        if (!ticket)
+    async findById(id) {
+        const ticket = await this.ticketModel.findById(id).exec();
+        if (!ticket || ticket.deletedAt)
             throw new common_1.NotFoundException('Ticket no encontrado');
-        const { status, ...rest } = ticket;
+        const { status, ...rest } = ticket.toObject();
         return rest;
     }
-    update(id, dto) {
-        const ticket = this.ticketsRepository.findById(id);
-        if (!ticket)
+    async update(id, dto) {
+        const ticket = await this.ticketModel.findById(id).exec();
+        if (!ticket || ticket.deletedAt)
             throw new common_1.NotFoundException('Ticket no encontrado');
-        if (dto.status == 'active' && ticket.status === 'inactive') {
-            throw new common_1.BadRequestException('No se puede reactivar un ticket inactivo.');
+        if (dto.status && !['active', 'used', 'expired'].includes(dto.status)) {
+            throw new common_1.BadRequestException('Estado de ticket inválido.');
         }
-        const update = {};
-        if (dto.status && ['active', 'used', 'expied'].includes(dto.status))
-            update.status = dto.status;
-        if (dto.type)
-            update.type = dto.type;
-        if (dto.date)
-            update.date = dto.date;
-        if (dto.paid !== undefined)
-            update.paid = dto.paid;
-        const updated = this.ticketsRepository.update(id, update);
-        if (!updated)
-            throw new common_1.NotFoundException('Error al actualizar el ticket');
-        return updated;
+        Object.assign(ticket, dto, { updatedAt: new Date() });
+        return ticket.save();
     }
-    softDelete(id, isAdmin) {
+    async softDelete(id, isAdmin) {
         if (!isAdmin)
             throw new common_1.ForbiddenException('Acceso denegado. Solo administradores pueden eliminar tickets.');
-        return this.ticketsRepository.softDelete(id);
+        const ticket = await this.ticketModel.findById(id).exec();
+        if (!ticket || ticket.deletedAt)
+            throw new common_1.NotFoundException('Ticket no encontrado');
+        ticket.deletedAt = new Date();
+        ticket.status = 'expired';
+        await ticket.save();
+        return true;
     }
 };
 exports.TicketsService = TicketsService;
 exports.TicketsService = TicketsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [tickets_repository_1.TicketsRepository])
+    __param(0, (0, mongoose_1.InjectModel)(ticket_entity_1.Ticket.name)),
+    __metadata("design:paramtypes", [mongoose_2.Model])
 ], TicketsService);
 //# sourceMappingURL=tickets.service.js.map

@@ -2,11 +2,11 @@ import { Document } from 'mongoose';
 import { TicketType, TicketStatus } from '../Dto/create-ticket.dto';
 export declare class Ticket extends Document {
     passengerId: string;
-    Date: Date;
+    date: Date;
     type: TicketType;
     status: TicketStatus;
     paid: number;
-    deletedAt: Date | null;
+    deletedAt?: Date;
 }
 export declare const TicketSchema: import("mongoose").Schema<Ticket, import("mongoose").Model<Ticket, any, any, any, Document<unknown, any, Ticket, any, {}> & Ticket & Required<{
     _id: unknown;

@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TicketsModule } from './tickets/tickets.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [TicketsModule],
+  imports: [MongooseModule.forRoot('mongodb://localhost/nest'),   TicketsModule],
   controllers: [AppController],
   providers: [AppService],
 })

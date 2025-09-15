@@ -11,16 +11,16 @@ async function seed() {
     await Ticket.create([{
         passengerId: 'passenger1',
         date: new Date(),
-        type: 'adult',
+        type: 'single',
         status: 'active',
-        paid: 100,
+        paid: 10000,
         deletedAt: null,
     }, {
         passengerId: 'passenger2',
         date: new Date(),
-        type: 'child',
-        status: 'active',
-        paid: 50,
+        type: 'return',
+        status: 'used',
+        paid: 5000,
         deletedAt: null,
     }]);
     console.log('Seeding completed');
@@ -28,6 +28,3 @@ async function seed() {
 }
 seed();
 
-// To run the seeder, use the command:
-// npx ts-node src/seeder.ts
-// Make sure you have ts-node installed as a dev dependency.

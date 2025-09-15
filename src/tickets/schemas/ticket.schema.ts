@@ -8,7 +8,7 @@ export class Ticket extends Document {
   passengerId: string;
 
   @Prop({ required: true })
-  Date: Date;
+  date: Date;
 
   @Prop({ required: true, enum: TicketType })
   type: TicketType;
@@ -26,6 +26,6 @@ export class Ticket extends Document {
 export const TicketSchema = SchemaFactory.createForClass(Ticket);
 
 TicketSchema.index(
-  { passengerId: 1, Date: 1, type: 1 },
+  { passengerId: 1, date: 1, type: 1 },
   { unique: true, partialFilterExpression: { deletedAt: null } },
 );

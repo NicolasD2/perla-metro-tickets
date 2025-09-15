@@ -7,7 +7,7 @@ export class TicketMapper {
         return {
             id: Math.random().toString(36).substring(2, 10),
             passengerId: dto.passengerId,
-            date: dto.date,
+            date: new Date(dto.date),
             type: dto.type,
             status: dto.status,
             paid: dto.paid,

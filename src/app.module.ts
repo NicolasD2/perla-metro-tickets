@@ -5,7 +5,7 @@ import { TicketsModule } from './tickets/tickets.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost/nest'),   TicketsModule],
+  imports: [MongooseModule.forRoot('mongodb://localhost/perla-metro-tickets'),   TicketsModule],
   controllers: [AppController],
   providers: [AppService],
 })

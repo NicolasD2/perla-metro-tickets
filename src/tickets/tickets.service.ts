@@ -8,10 +8,20 @@ import { UpdateTicketDto } from "./Dto/update-ticket.dto";
 
 @Injectable()
 export class TicketsService {
-  
+
   constructor(@InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>) {}
    
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
+    if(!['single','return'].includes(createTicketDto.type)) {
+      throw new BadRequestException('Tipo de ticket inválido.');
+    }
+    if(!['active','used','expired'].includes(createTicketDto.status)) {
+      throw new BadRequestException('Estado de ticket inválido.');
+    }
+    if(typeof createTicketDto.paid !== 'number' || createTicketDto.paid <= 0) {
+      throw new BadRequestException('El monto pagado debe ser un número positivo.');
+    }
+
     const duplicate = await this.ticketModel.findOne({
       passengerId: createTicketDto.passengerId,
       date: createTicketDto.date,

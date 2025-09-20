@@ -24,6 +24,15 @@ let TicketsService = class TicketsService {
         this.ticketModel = ticketModel;
     }
     async create(createTicketDto) {
+        if (!['single', 'return'].includes(createTicketDto.type)) {
+            throw new common_1.BadRequestException('Tipo de ticket inválido.');
+        }
+        if (!['active', 'used', 'expired'].includes(createTicketDto.status)) {
+            throw new common_1.BadRequestException('Estado de ticket inválido.');
+        }
+        if (typeof createTicketDto.paid !== 'number' || createTicketDto.paid <= 0) {
+            throw new common_1.BadRequestException('El monto pagado debe ser un número positivo.');
+        }
         const duplicate = await this.ticketModel.findOne({
             passengerId: createTicketDto.passengerId,
             date: createTicketDto.date,
@@ -53,10 +62,20 @@ let TicketsService = class TicketsService {
     }
     async update(id, dto) {
         const ticket = await this.ticketModel.findById(id).exec();
-        if (!ticket || ticket.deletedAt)
+        if (!ticket || ticket.deletedAt) {
             throw new common_1.NotFoundException('Ticket no encontrado');
+        }
         if (dto.status && !['active', 'used', 'expired'].includes(dto.status)) {
             throw new common_1.BadRequestException('Estado de ticket inválido.');
+        }
+        if (dto.type && !['single', 'return'].includes(dto.type)) {
+            throw new common_1.BadRequestException('Tipo de ticket inválido.');
+        }
+        if (dto.paid !== undefined && (typeof dto.paid !== 'number' || dto.paid <= 0)) {
+            throw new common_1.BadRequestException('El monto pagado debe ser un número positivo.');
+        }
+        if (dto.status === 'used' && ticket.status === 'expired') {
+            throw new common_1.BadRequestException('No se puede cambiar el estado de un ticket expirado a usado.');
         }
         Object.assign(ticket, dto, { updatedAt: new Date() });
         return ticket.save();

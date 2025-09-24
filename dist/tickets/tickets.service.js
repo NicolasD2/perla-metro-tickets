@@ -54,6 +54,9 @@ let TicketsService = class TicketsService {
         return this.ticketModel.find({ deletedAt: { $exists: false } }).exec();
     }
     async findById(id) {
+        if (!mongoose_2.Types.ObjectId.isValid(id)) {
+            throw new common_1.BadRequestException('ID de ticket inválido.');
+        }
         const ticket = await this.ticketModel.findById(id).exec();
         if (!ticket || ticket.deletedAt)
             throw new common_1.NotFoundException('Ticket no encontrado');
@@ -61,6 +64,9 @@ let TicketsService = class TicketsService {
         return rest;
     }
     async update(id, dto) {
+        if (!mongoose_2.Types.ObjectId.isValid(id)) {
+            throw new common_1.BadRequestException('ID de ticket inválido.');
+        }
         const ticket = await this.ticketModel.findById(id).exec();
         if (!ticket || ticket.deletedAt) {
             throw new common_1.NotFoundException('Ticket no encontrado');
@@ -81,6 +87,9 @@ let TicketsService = class TicketsService {
         return ticket.save();
     }
     async softDelete(id, isAdmin) {
+        if (!mongoose_2.Types.ObjectId.isValid(id)) {
+            throw new common_1.BadRequestException('ID de ticket inválido.');
+        }
         if (!isAdmin)
             throw new common_1.ForbiddenException('Acceso denegado. Solo administradores pueden eliminar tickets.');
         const ticket = await this.ticketModel.findById(id).exec();

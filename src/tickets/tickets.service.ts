@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { Ticket } from "./entities/ticket.entity";
 import { CreateTicketDto } from "./Dto/create-ticket.dto";
 import { getPassengerName } from "./Util/ticket.util";
@@ -45,6 +45,10 @@ export class TicketsService {
   }
 
    async findById(id: string): Promise<Partial<Ticket>> {
+
+    if(!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('ID de ticket inválido.');
+    }
     const ticket = await this.ticketModel.findById(id).exec();
     if (!ticket || ticket.deletedAt) throw new NotFoundException('Ticket no encontrado');
     const { status, ...rest } = ticket.toObject();
@@ -52,6 +56,9 @@ export class TicketsService {
   }
 
   async update(id: string, dto: UpdateTicketDto): Promise<Ticket> {
+    if(!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('ID de ticket inválido.');
+    }
     const ticket = await this.ticketModel.findById(id).exec();
     
     if (!ticket || ticket.deletedAt){
@@ -80,6 +87,9 @@ export class TicketsService {
   }
 
   async softDelete(id: string, isAdmin: boolean): Promise<boolean> {
+    if(!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('ID de ticket inválido.');
+    }
     if(!isAdmin) throw new ForbiddenException('Acceso denegado. Solo administradores pueden eliminar tickets.');
     const ticket = await this.ticketModel.findById(id).exec();
     if (!ticket || ticket.deletedAt) throw new NotFoundException('Ticket no encontrado');

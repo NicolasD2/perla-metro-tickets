@@ -1,29 +1,35 @@
-import {connect, model} from 'mongoose';
+import {connect, model, Types} from 'mongoose';
 import { TicketSchema } from 'src/tickets/schemas/ticket.schema';
 
 async function seed() {
-    await connect('mongodb://localhost/perla-metro-tickets');
+    await connect('mongodb+srv://perla_admin:2ak13p02@perla-metro-ticket-serv.jq2wzva.mongodb.net/perla-metro-tickets');
     
     const Ticket = model('Ticket', TicketSchema);
 
     await Ticket.deleteMany({});
 
+    const userID1 = new Types.ObjectId();
+    const userID2 = new Types.ObjectId();
+
     await Ticket.create([{
-        passengerId: 'passenger1',
+        passengerId: userID1,
         date: new Date(),
         type: 'single',
         status: 'active',
         paid: 10000,
-        deletedAt: null,
+        
     }, {
-        passengerId: 'passenger2',
+        passengerId: userID2,
         date: new Date(),
         type: 'return',
         status: 'used',
         paid: 5000,
-        deletedAt: null,
+        
     }]);
     console.log('Seeding completed');
+    console.log('User IDs for testing:');
+    console.log('User 1 ID:', userID1.toString());
+    console.log('User 2 ID:', userID2.toString());
     process.exit(0);
 }
 seed();

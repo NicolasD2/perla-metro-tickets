@@ -36,7 +36,7 @@ let TicketsService = class TicketsService {
         const duplicate = await this.ticketModel.findOne({
             passengerId: createTicketDto.passengerId,
             date: createTicketDto.date,
-            deletedAt: { $exists: false }
+            $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }]
         });
         if (duplicate)
             throw new common_1.BadRequestException('Ya existe un ticket para este pasajero en la misma fecha.');
@@ -54,14 +54,14 @@ let TicketsService = class TicketsService {
     async findAll(isAdmin) {
         if (!isAdmin)
             throw new common_1.ForbiddenException('Acceso denegado. Solo administradores pueden ver todos los tickets.');
-        console.log('🔍 Buscando TODOS los tickets...');
+        console.log('Buscando TODOS los tickets.');
         const allTickets = await this.ticketModel.find({}).exec();
-        console.log('🔍 Total tickets en BD:', allTickets.length);
-        console.log('🔍 Tickets encontrados:', allTickets);
-        console.log('🔍 Aplicando filtro deletedAt...');
+        console.log('Total tickets en BD:', allTickets.length);
+        console.log('Tickets encontrados:', allTickets);
+        console.log('Aplicando filtro deletedAt...');
         const activeTickets = await this.ticketModel.find({ deletedAt: { $exists: false } }).exec();
-        console.log('🔍 Tickets activos:', activeTickets.length);
-        console.log('🔍 Tickets activos data:', activeTickets);
+        console.log('Tickets activos:', activeTickets.length);
+        console.log('Tickets activos data:', activeTickets);
         return this.ticketModel.find({ $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }] }).exec();
     }
     async findById(id) {

@@ -54,7 +54,15 @@ let TicketsService = class TicketsService {
     async findAll(isAdmin) {
         if (!isAdmin)
             throw new common_1.ForbiddenException('Acceso denegado. Solo administradores pueden ver todos los tickets.');
-        return this.ticketModel.find({ deletedAt: { $exists: false } }).exec();
+        console.log('🔍 Buscando TODOS los tickets...');
+        const allTickets = await this.ticketModel.find({}).exec();
+        console.log('🔍 Total tickets en BD:', allTickets.length);
+        console.log('🔍 Tickets encontrados:', allTickets);
+        console.log('🔍 Aplicando filtro deletedAt...');
+        const activeTickets = await this.ticketModel.find({ deletedAt: { $exists: false } }).exec();
+        console.log('🔍 Tickets activos:', activeTickets.length);
+        console.log('🔍 Tickets activos data:', activeTickets);
+        return this.ticketModel.find({ $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }] }).exec();
     }
     async findById(id) {
         if (!mongoose_2.Types.ObjectId.isValid(id)) {
@@ -86,8 +94,29 @@ let TicketsService = class TicketsService {
         if (dto.status === 'used' && ticket.status === 'expired') {
             throw new common_1.BadRequestException('No se puede cambiar el estado de un ticket expirado a usado.');
         }
-        Object.assign(ticket, dto, { updatedAt: new Date() });
-        return ticket.save();
+        const existingTicket = await this.ticketModel.findOne({
+            _id: id, $or: [
+                { deletedAt: { $exists: false } },
+                { deletedAt: null }
+            ]
+        }).exec();
+        if (!existingTicket) {
+            throw new common_1.NotFoundException('Ticket no encontrado o ya eliminado.');
+        }
+        if (dto.status == 'used' && existingTicket.status === 'expired') {
+            throw new common_1.BadRequestException('No se puede cambiar el estado de un ticket expirado a usado.');
+        }
+        const updateData = { updatedAt: new Date() };
+        if (dto.date !== undefined && dto.date !== null)
+            updateData.date = dto.date;
+        if (dto.status !== undefined && dto.status !== null)
+            updateData.status = dto.status;
+        if (dto.type !== undefined && dto.type !== null)
+            updateData.type = dto.type;
+        if (dto.paid !== undefined && dto.paid !== null)
+            updateData.paid = dto.paid;
+        const updatedTicket = await this.ticketModel.findByIdAndUpdate(id, updateData, { new: true, runValidators: false }).exec();
+        return updatedTicket;
     }
     async softDelete(id, isAdmin) {
         if (!mongoose_2.Types.ObjectId.isValid(id)) {

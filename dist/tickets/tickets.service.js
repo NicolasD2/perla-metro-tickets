@@ -45,8 +45,11 @@ let TicketsService = class TicketsService {
             passengerName: (0, ticket_util_1.getPassengerName)(createTicketDto.passengerId),
             createdAt: new Date(),
             updatedAt: new Date(),
+            deletedAt: null
         });
-        return ticket.save();
+        const savedTicket = await ticket.save();
+        console.log('Ticket creado:', savedTicket);
+        return savedTicket;
     }
     async findAll(isAdmin) {
         if (!isAdmin)

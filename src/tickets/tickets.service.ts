@@ -34,8 +34,11 @@ export class TicketsService {
       passengerName: getPassengerName(createTicketDto.passengerId),
       createdAt: new Date(),
       updatedAt: new Date(),
+      deletedAt: null
     });
-    return ticket.save();
+    const savedTicket = await ticket.save();
+    console.log('Ticket creado:', savedTicket);
+    return savedTicket;
 
   }
 

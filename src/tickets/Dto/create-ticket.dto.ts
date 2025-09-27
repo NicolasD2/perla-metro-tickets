@@ -1,14 +1,14 @@
 import { IsEnum, IsString, IsDateString, IsNumber } from 'class-validator';
 
 export enum TicketType {
-  SINGLE = 'single',
-  RETURN = 'return',
+  SINGLE = 'ida',
+  RETURN = 'vuelta',
 }
 
 export enum TicketStatus {
-  ACTIVE = 'active',
-  USED = 'used',
-  EXPIRED = 'expired',
+  ACTIVE = 'activo',
+  USED = 'usado',
+  EXPIRED = 'caducado',
 }
 
 export class CreateTicketDto {

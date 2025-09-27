@@ -1,11 +1,11 @@
 export declare enum TicketType {
-    SINGLE = "single",
-    RETURN = "return"
+    SINGLE = "ida",
+    RETURN = "vuelta"
 }
 export declare enum TicketStatus {
-    ACTIVE = "active",
-    USED = "used",
-    EXPIRED = "expired"
+    ACTIVE = "activo",
+    USED = "usado",
+    EXPIRED = "caducado"
 }
 export declare class CreateTicketDto {
     passengerId: string;

@@ -12,10 +12,10 @@ export class TicketsService {
   constructor(@InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>) {}
    
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
-    if(!['single','return'].includes(createTicketDto.type)) {
+    if(!['ida','vuelta'].includes(createTicketDto.type)) {
       throw new BadRequestException('Tipo de ticket inválido.');
     }
-    if(!['active','used','expired'].includes(createTicketDto.status)) {
+    if(!['activo','usado','caducado'].includes(createTicketDto.status)) {
       throw new BadRequestException('Estado de ticket inválido.');
     }
     if(typeof createTicketDto.paid !== 'number' || createTicketDto.paid <= 0) {
@@ -79,11 +79,11 @@ export class TicketsService {
       throw new NotFoundException('Ticket no encontrado');
     } 
     
-    if (dto.status && !['active', 'used', 'expired'].includes(dto.status)) {
+    if (dto.status && !['activo', 'usado', 'caducado'].includes(dto.status)) {
       throw new BadRequestException('Estado de ticket inválido.');
     }
 
-    if(dto.type && !['single', 'return'].includes(dto.type)) {
+    if(dto.type && !['ida', 'vuelta'].includes(dto.type)) {
       throw new BadRequestException('Tipo de ticket inválido.');
     }
 
@@ -91,8 +91,8 @@ export class TicketsService {
       throw new BadRequestException('El monto pagado debe ser un número positivo.');
     }
 
-    if(dto.status === 'used' && ticket.status === 'expired') {
-      throw new BadRequestException('No se puede cambiar el estado de un ticket expirado a usado.');
+    if(dto.status === 'usado' && ticket.status === 'caducado') {
+      throw new BadRequestException('No se puede cambiar el estado de un ticket caducado a usado.');
     }
 
     const existingTicket = await this.ticketModel.findOne({
@@ -106,8 +106,8 @@ export class TicketsService {
       throw new NotFoundException('Ticket no encontrado o ya eliminado.');
     }
 
-    if(dto.status== 'used' && existingTicket.status === 'expired') {
-      throw new BadRequestException('No se puede cambiar el estado de un ticket expirado a usado.');
+    if(dto.status== 'usado' && existingTicket.status === 'caducado') {
+      throw new BadRequestException('No se puede cambiar el estado de un ticket caducado a usado.');
     }
 
     const updateData: any ={updatedAt: new Date()};
@@ -129,7 +129,7 @@ export class TicketsService {
     const ticket = await this.ticketModel.findById(id).exec();
     if (!ticket || ticket.deletedAt) throw new NotFoundException('Ticket no encontrado');
     ticket.deletedAt = new Date();
-    ticket.status = 'expired';
+    ticket.status = 'caducado';
     await ticket.save();
     return true;
   }

@@ -13,14 +13,14 @@ exports.CreateTicketDto = exports.TicketStatus = exports.TicketType = void 0;
 const class_validator_1 = require("class-validator");
 var TicketType;
 (function (TicketType) {
-    TicketType["SINGLE"] = "single";
-    TicketType["RETURN"] = "return";
+    TicketType["SINGLE"] = "ida";
+    TicketType["RETURN"] = "vuelta";
 })(TicketType || (exports.TicketType = TicketType = {}));
 var TicketStatus;
 (function (TicketStatus) {
-    TicketStatus["ACTIVE"] = "active";
-    TicketStatus["USED"] = "used";
-    TicketStatus["EXPIRED"] = "expired";
+    TicketStatus["ACTIVE"] = "activo";
+    TicketStatus["USED"] = "usado";
+    TicketStatus["EXPIRED"] = "caducado";
 })(TicketStatus || (exports.TicketStatus = TicketStatus = {}));
 class CreateTicketDto {
     passengerId;

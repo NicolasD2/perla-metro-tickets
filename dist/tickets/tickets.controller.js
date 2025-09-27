@@ -40,28 +40,28 @@ let TicketsController = class TicketsController {
 };
 exports.TicketsController = TicketsController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('crear'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_ticket_dto_1.CreateTicketDto]),
     __metadata("design:returntype", Promise)
 ], TicketsController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('obtener'),
     __param(0, (0, common_1.Query)('admin')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], TicketsController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('buscar/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], TicketsController.prototype, "findById", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_1.Patch)('actualizar/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -69,7 +69,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TicketsController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)('eliminar/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Query)('admin')),
     __metadata("design:type", Function),

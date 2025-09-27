@@ -1,7 +1,9 @@
 import { AppService } from './app.service';
+import { Connection } from 'mongoose';
 export declare class AppController {
     private readonly appService;
-    constructor(appService: AppService);
+    private readonly connection;
+    constructor(appService: AppService, connection: Connection);
     getRoot(): {
         message: string;
         version: string;
@@ -26,4 +28,5 @@ export declare class AppController {
         database: string;
         ticketsEndpoint: string;
     };
+    private getDatabaseStatus;
 }

@@ -8,25 +8,25 @@ import { UpdateTicketDto } from './Dto/update-ticket.dto';
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
-  @Post('/crear')
+  @Post('crear')
   create(@Body() createTicketDto: CreateTicketDto): Promise<Ticket> {
     return this.ticketsService.create(createTicketDto);
   }
 
-  @Get('/obtener')
+  @Get('obtener')
   findAll(@Query('admin') admin: string): Promise<Ticket[]> {
     return this.ticketsService.findAll(admin === 'true');
   }
 
-  @Get('/buscar/:id')
+  @Get('buscar/:id')
   findById(@Param('id') id: string): Promise<Partial<Ticket>> {
     return this.ticketsService.findById(id);
   }
-  @Patch('/actualizar/:id')
+  @Patch('actualizar/:id')
   update(@Param('id') id: string, @Body() dto: UpdateTicketDto): Promise<Ticket> {
     return this.ticketsService.update(id, dto);
   }
-  @Delete('/eliminar/:id')
+  @Delete('eliminar/:id')
   softDelete(@Param('id') id: string, @Query('admin') admin : string): Promise<boolean>{
     return this.ticketsService.softDelete(id, admin==='true');
   }

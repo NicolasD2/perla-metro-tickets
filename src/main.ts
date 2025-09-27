@@ -21,13 +21,15 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   const port = process.env.PORT || 5050;
   await app.listen(port, '0.0.0.0');
-  
-  console.log(`Application is running on: http://localhost:${port}/api`);
-  console.log('URL base : http://localhost:5050/api');
-  console.log('Health check : http://localhost:5050/api/health');
-  console.log('Tickets endpoint : http://localhost:5050/api/tickets');
-  console.log(`Entorno: ${process.env.NODE_ENV || 'development'}`);
 
+  console.log('Backend API - Sistema de Tickets ejecutandose en el puerto ${port}');
+  console.log(` URL base: ${process.env.NODE_ENV === 'production' ? 'https://tu-app.onrender.com' : 'http://localhost:' + port}/api`);
+  console.log('Endpoints disponibles:');
+  console.log('GET /api/tickets - Listar todos los tickets')
+  console.log('POST /api/tickets - Crear un nuevo ticket')
+  console.log('GET /api/tickets/:id - Obtener un ticket por ID')
+  console.log('PATCH /api/tickets/:id - Actualizar un ticket por ID')
+  console.log('DELETE /api/tickets/:id - Eliminar (soft delete) un ticket por ID')
 }
 
 void bootstrap();

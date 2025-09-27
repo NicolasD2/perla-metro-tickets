@@ -35,7 +35,7 @@ export class AppController {
       timestamp: new Date().toISOString(),
       uptime: Math.floor(process.uptime()) + ' seconds',
       environment: process.env.NODE_ENV || 'development',
-      database: process.env.MONGODB_URI ? 'Connected' : 'Local',
+      database: dbStatus,
       ticketsEndpoint: '/api/tickets',
     }
   }

@@ -14,15 +14,15 @@ async function seed() {
     await Ticket.create([{
         passengerId: userID1,
         date: new Date(),
-        type: 'single',
-        status: 'active',
+        type: 'ida',
+        status: 'activo',
         paid: 10000,
         
     }, {
         passengerId: userID2,
         date: new Date(),
-        type: 'return',
-        status: 'used',
+        type: 'vuelta',
+        status: 'usado',
         paid: 5000,
         
     }]);

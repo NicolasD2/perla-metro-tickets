@@ -47,14 +47,9 @@ export class TicketsService {
  
     console.log('Buscando TODOS los tickets.');
     const allTickets = await this.ticketModel.find({}).exec();
-    console.log('Total tickets en BD:', allTickets.length);
-    console.log('Tickets encontrados:', allTickets);
-  
 
-    console.log('Aplicando filtro deletedAt...');
     const activeTickets = await this.ticketModel.find({deletedAt: {$exists: false}}).exec();
-    console.log('Tickets activos:', activeTickets.length);
-    console.log('Tickets activos data:', activeTickets);
+
     return this.ticketModel.find({$or:[{deletedAt: null},{deletedAt:{$exists: false}}]}).exec();
   }
 

@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
 import { Ticket } from "./entities/ticket.entity";
 import { CreateTicketDto } from "./Dto/create-ticket.dto";
-import { getPassengerName } from "./Util/ticket.util";
+import { getPassengerName, formatTicketDate } from "./Util/ticket.util";
 import { UpdateTicketDto } from "./Dto/update-ticket.dto";
 
 @Injectable()
@@ -11,6 +11,15 @@ export class TicketsService {
 
   constructor(@InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>) {}
    
+  private formatTicketResponse(ticket: any): any 
+  {
+    const ticketObj = ticket.toObject() ? ticket.toObject() : ticket;
+    return {
+      ...ticketObj,
+      date: formatTicketDate(ticket.date),
+    };
+  }
+
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     if(!['ida','vuelta'].includes(createTicketDto.type)) {
       throw new BadRequestException('Tipo de ticket inválido.');
@@ -38,7 +47,7 @@ export class TicketsService {
     });
     const savedTicket = await ticket.save();
     console.log('Ticket creado:', savedTicket);
-    return savedTicket;
+    return this.formatTicketResponse(savedTicket);
 
   }
 
@@ -46,11 +55,9 @@ export class TicketsService {
     if(!isAdmin) throw new ForbiddenException('Acceso denegado. Solo administradores pueden ver todos los tickets.');
  
     console.log('Buscando TODOS los tickets.');
-    const allTickets = await this.ticketModel.find({}).exec();
+    const tickets = await this.ticketModel.find({$or:[{deletedAt: null},{deletedAt:{$exists: false}}]}).exec();
 
-    const activeTickets = await this.ticketModel.find({deletedAt: {$exists: false}}).exec();
-
-    return this.ticketModel.find({$or:[{deletedAt: null},{deletedAt:{$exists: false}}]}).exec();
+    return tickets.map(ticket => this.formatTicketResponse(ticket));
   }
 
    async findById(id: string): Promise<Partial<Ticket>> {
@@ -60,7 +67,8 @@ export class TicketsService {
     }
     const ticket = await this.ticketModel.findById(id).exec();
     if (!ticket || ticket.deletedAt) throw new NotFoundException('Ticket no encontrado');
-    const { status, ...rest } = ticket.toObject();
+    const formattedTicket = this.formatTicketResponse(ticket);
+    const { status, ...rest } = formattedTicket;
     return rest;
   }
 
@@ -112,7 +120,7 @@ export class TicketsService {
     if(dto.paid !== undefined && dto.paid !== null) updateData.paid = dto.paid;
 
     const updatedTicket = await this.ticketModel.findByIdAndUpdate(id, updateData, { new: true, runValidators: false }).exec();
-    return updatedTicket!;
+    return this.formatTicketResponse(updatedTicket!);
 
   }
 

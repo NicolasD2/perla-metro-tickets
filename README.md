@@ -1,98 +1,275 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Perla Metro Tickets API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Sistema de gestión de tickets de metro desarrollado con NestJS, MongoDB y TypeScript. Una API RESTful para administrar tickets de transporte público con funcionalidades completas de CRUD y soft delete.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Demo en Vivo
 
-## Description
+**API Base URL:** (https://perla-metro-tickets.onrender.com/api/tickets/)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**Endpoints principales:**
+- `GET /api/health` - Estado del sistema
+- `GET /api/tickets/findAll?admin=true` - Listar todos los tickets (admin)
+- `POST /api/tickets/create` - Crear nuevo ticket
 
-## Project setup
+## Características
 
+- ✅ **CRUD completo** de tickets
+- ✅ **Soft Delete** - Eliminación lógica
+- ✅ **Validaciones robustas** con class-validator
+- ✅ **Índices únicos** para prevenir duplicados
+- ✅ **Formateo automático** de fechas
+- ✅ **Control de permisos** (admin/usuario)
+- ✅ **Seeder incluido** para datos de prueba
+- ✅ **Health check** con estado de base de datos
+- ✅ **CORS configurado** para frontend
+- ✅ **Desplegado en Render** con CI/CD
+
+## 🛠 Tecnologías
+
+- **Backend:** NestJS + TypeScript
+- **Base de datos:** MongoDB Atlas
+- **Validación:** class-validator + class-transformer
+- **Despliegue:** Render
+- **Testing:** Jest
+- **Linting:** ESLint + Prettier
+
+## Instalación Local
+
+### Prerrequisitos
+
+- Node.js >= 18.0.0
+- npm >= 8.0.0
+- Cuenta en MongoDB Atlas (o MongoDB local)
+
+### Pasos
+
+1. **Clonar el repositorio:**
 ```bash
-$ npm install
+git clone https://github.com/NicolasD2/perla-metro-tickets.git
+cd perla-metro-tickets
 ```
 
-## Compile and run the project
-
+2. **Instalar dependencias:**
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
-
+3. **Configurar variables de entorno:**
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+Editar `.env` con tus valores:
+```env
+NODE_ENV=development
+PORT=5050
+MONGODB_URI=mongodb+srv://usuario:password@cluster.mongodb.net/database
+INTERNAL_API_KEY=tu_clave_secreta
+API_URL=http://localhost:5050
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+4. **Ejecutar en desarrollo:**
+```bash
+npm run start:dev
+```
 
-## Resources
+La API estará disponible en `http://localhost:5050`
 
-Check out a few resources that may come in handy when working with NestJS:
+##  Estructura del Proyecto
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```
+src/
+├── app.module.ts          # Módulo principal
+├── app.controller.ts      # Controlador raíz y health check
+├── main.ts               # Punto de entrada
+├── tickets/              # Módulo de tickets
+│   ├── tickets.controller.ts
+│   ├── tickets.service.ts
+│   ├── tickets.module.ts
+│   ├── Dto/              # Data Transfer Objects
+│   ├── entities/         # Entidades
+│   ├── schemas/          # Schemas de MongoDB
+│   ├── Mapper/           # Mappers
+│   └── Util/             # Utilidades
+└── seeder/               # Scripts de datos de prueba
+    ├── seeder.ts
+    └── clear-tickets.ts
+```
 
-## Support
+##  Uso de la API
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Health Check
+```bash
+GET /api/health
+```
 
-## Stay in touch
+### Crear Ticket
+```bash
+POST /api/tickets/create
+Content-Type: application/json
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+{
+  "passengerId": "550e8400-e29b-41d4-a716-446655440001",
+  "date": "2025-09-28T15:30:00.000Z",
+  "type": "ida",
+  "status": "activo",
+  "paid": 2500
+}
+```
 
-## License
+### Listar Tickets (Admin)
+```bash
+GET /api/tickets/findAll?admin=true
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Buscar Ticket por ID
+```bash
+GET /api/tickets/find/:id
+```
+
+### Actualizar Ticket
+```bash
+PATCH /api/tickets/update/:id
+Content-Type: application/json
+
+{
+  "status": "usado"
+}
+```
+
+### Eliminar Ticket (Admin)
+```bash
+DELETE /api/tickets/delete/:id?admin=true
+```
+
+## 🎲 Datos de Prueba
+
+### Generar datos aleatorios:
+```bash
+# 30 tickets por defecto
+npx ts-node src/seeder/seeder.ts
+
+# Cantidad específica
+npx ts-node src/seeder/seeder.ts 50
+```
+
+### Limpiar base de datos:
+```bash
+npx ts-node src/seeder/clear-tickets.ts
+```
+
+## 🧪 Testing
+
+```bash
+# Tests unitarios
+npm run test
+
+# Tests e2e
+npm run test:e2e
+
+# Cobertura
+npm run test:cov
+```
+
+## 📝 Validaciones
+
+### Tipos de Ticket
+- `ida` - Ticket de ida
+- `vuelta` - Ticket de vuelta
+
+### Estados de Ticket
+- `activo` - Ticket válido y sin usar
+- `usado` - Ticket ya utilizado
+- `caducado` - Ticket expirado
+
+### Reglas de Negocio
+- ✅ Un pasajero no puede tener tickets duplicados (mismo día + tipo)
+- ✅ No se puede cambiar un ticket caducado a usado
+- ✅ El monto debe ser positivo
+- ✅ Solo admins pueden ver/eliminar todos los tickets
+
+## Despliegue
+
+### Render (Automático)
+
+1. **Fork del repositorio**
+2. **Conectar con Render:**
+   - New Web Service
+   - Connect GitHub repo
+   - Branch: `main`
+   - Build: `npm install && npx tsc -p tsconfig.build.json`
+   - Start: `npm run start:prod`
+
+3. **Variables de entorno en Render:**
+```
+NODE_ENV=production
+MONGODB_URI=tu_mongodb_atlas_uri
+INTERNAL_API_KEY=tu_clave_secreta
+```
+
+### Manual
+
+```bash
+# Build de producción
+npm run build
+
+# Ejecutar en producción
+npm run start:prod
+```
+
+## Scripts Disponibles
+
+```bash
+npm run start          # Desarrollo
+npm run start:dev      # Desarrollo con watch
+npm run start:prod     # Producción
+npm run build          # Build
+npm run test           # Tests
+npm run lint           # Linting
+```
+
+## Ejemplos de Respuesta
+
+### Ticket Creado
+```json
+{
+  "_id": "67f1e5d4a1b2c3d4e5f6g7h8",
+  "passengerId": "550e8400-e29b-41d4-a716-446655440001",
+  "passengerName": "Juan Pérez",
+  "date": "28/09/2025 15:30",
+  "type": "ida",
+  "status": "activo",
+  "paid": 2500,
+  "deletedAt": null
+}
+```
+
+### Health Check
+```json
+{
+  "status": "OK",
+  "service": "Tickets API",
+  "timestamp": "2025-09-28T20:30:00.000Z",
+  "uptime": "120 seconds",
+  "environment": "production",
+  "database": "Connected (MongoDB Atlas)",
+  "ticketsEndpoint": "/api/tickets"
+}
+```
+## Licencia
+
+Este proyecto está bajo la Licencia MIT - ver [LICENSE](LICENSE) para detalles.
+
+## Autor
+
+**Nicolás** - [GitHub](https://github.com/NicolasD2)
+
+## Soporte
+
+Si tienes preguntas o problemas:
+
+1. Abre un [Issue](https://github.com/NicolasD2/perla-metro-tickets/issues)
+2. Revisa la documentación de endpoints
+3. Verifica el health check: `/api/health`
+
+---

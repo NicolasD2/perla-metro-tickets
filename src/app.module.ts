@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://perla_admin:2ak13p02@perla-metro-ticket-serv.jq2wzva.mongodb.net/perla-metro-tickets'),
+    MongooseModule.forRoot(process.env.MONGODB_URL!),
     TicketsModule
   ],
   controllers: [AppController],

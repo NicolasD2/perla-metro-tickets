@@ -71,10 +71,16 @@ interface TicketData {
 }
 
 async function randomSeed(numberOfTickets: number = 50) {
+    const mongoUrl = process.env.MONGODB_URL;
+    if (!mongoUrl) {
+        console.error('MONGODB_URL no está definido en las variables de entorno');
+        return;
+    }
     try {
         console.log('Conectando a base de datos...');
-        await connect('mongodb+srv://perla_admin:2ak13p02@perla-metro-ticket-serv.jq2wzva.mongodb.net/perla-metro-tickets');
-        
+        await connect(mongoUrl);
+        console.log('Conectado exitosamente');
+
         const Ticket = model('Ticket', TicketSchema);
 
         const deletedCount = (await Ticket.deleteMany({})).deletedCount;

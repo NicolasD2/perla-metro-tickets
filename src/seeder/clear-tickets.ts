@@ -1,5 +1,7 @@
-import {connect, model, Schema, disconnect} from 'mongoose';
 
+import {connect, model, Schema, disconnect} from 'mongoose';
+import { config } from 'dotenv';
+config();
 
 const TicketSchema = new Schema({
     passengerId: { type: String, required: true },
@@ -12,11 +14,13 @@ const TicketSchema = new Schema({
 });
 
 async function clearTickets() {
+    const mongoUrl = process.env.MONGODB_URL;
+    if (!mongoUrl) {
+        console.error('MONGODB_URL no está definido en las variables de entorno');
+        return;
+    }    
     try {
-        console.log('Conectando a MongoDB...');
-        await connect('mongodb+srv://perla_admin:2ak13p02@perla-metro-ticket-serv.jq2wzva.mongodb.net/perla-metro-tickets');
-        console.log('Conectado exitosamente');
-        
+
         const Ticket = model('Ticket', TicketSchema);
         
         const result = await Ticket.deleteMany({});

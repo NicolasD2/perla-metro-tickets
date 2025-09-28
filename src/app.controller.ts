@@ -45,17 +45,17 @@ private getDatabaseStatus(): string {
   const connectionReady = this.connection.readyState === 1;
   
   // Debug temporal
-  console.log('🔍 Debug MongoDB URI (first 30 chars):', mongoUri.substring(0, 30));
-  console.log('🔍 Connection ready:', connectionReady);
-  console.log('🔍 Contains mongodb+srv:', mongoUri.includes('mongodb+srv://'));
+  console.log('Debug MongoDB URI (first 30 chars):', mongoUri.substring(0, 30));
+  console.log('Connection ready:', connectionReady);
+  console.log('Contains mongodb+srv:', mongoUri.includes('mongodb+srv://'));
   
   // Si usa MongoDB Atlas (mongodb+srv)
   if (mongoUri.includes('mongodb+srv://')) {
-    console.log('✅ Atlas detected!');
+    console.log('Atlas detected!');
     return connectionReady ? 'Connected (MongoDB Atlas)' : 'Disconnected (Atlas)';
   }
   
-  console.log('❌ Atlas NOT detected, using fallback');
+  console.log('Atlas NOT detected, using fallback');
   
   // Si usa MongoDB local
   if (mongoUri.includes('localhost') || mongoUri.includes('127.0.0.1')) {

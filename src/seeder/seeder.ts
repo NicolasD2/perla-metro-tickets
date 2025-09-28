@@ -1,5 +1,29 @@
-import {connect, model, Types} from 'mongoose';
-import { TicketSchema } from 'src/tickets/schemas/ticket.schema';
+import {connect, model, Schema} from 'mongoose';
+
+
+enum TicketType {
+    IDA = 'ida',
+    VUELTA = 'vuelta',
+}
+enum TicketStatus {
+    ACTIVO = 'activo',
+    USADO = 'usado',
+    CADUCADO = 'caducado',
+}
+
+const TicketSchema = new Schema({
+    passengerId: { type: String, required: true },
+    date: { type: Date, required: true },
+    type: { type: String, enum: Object.values(TicketType), required: true },
+    status: { type: String, enum: Object.values(TicketStatus), required: true },
+    paid: { type: Number, required: true },
+    deletedAt: { type: Date, default: null }
+});
+
+TicketSchema.index(
+    { passengerId: 1, date: 1, type: 1 },
+    { unique: true, partialFilterExpression: { deletedAt: null } },
+);
 
 const mockUsers = [
     { id: "550e8400-e29b-41d4-a716-446655440001", name: "Juan Pérez" },

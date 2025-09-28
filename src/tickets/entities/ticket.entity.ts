@@ -6,7 +6,5 @@ export class Ticket {
   type: String;
   status: String;
   paid: number;
-  createdAt: Date;
-  updatedAt: Date;
   deletedAt?: Date;
 }

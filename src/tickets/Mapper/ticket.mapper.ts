@@ -11,8 +11,6 @@ export class TicketMapper {
             type: dto.type,
             status: dto.status,
             paid: dto.paid,
-            createdAt: new Date(now),
-            updatedAt: new Date(now),
         };
     }
 

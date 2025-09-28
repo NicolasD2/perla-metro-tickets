@@ -13,6 +13,7 @@ enum TicketStatus {
 
 const TicketSchema = new Schema({
     passengerId: { type: String, required: true },
+    passengerName: { type: String, required: false },
     date: { type: Date, required: true },
     type: { type: String, enum: Object.values(TicketType), required: true },
     status: { type: String, enum: Object.values(TicketStatus), required: true },

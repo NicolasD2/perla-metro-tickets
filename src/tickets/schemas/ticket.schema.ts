@@ -7,6 +7,9 @@ export class Ticket extends Document {
   @Prop({ required: true })
   passengerId: string;
 
+  @Prop({required: false})
+  passengerName?: string;
+
   @Prop({ required: true })
   date: Date;
 

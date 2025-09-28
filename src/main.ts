@@ -24,11 +24,11 @@ async function bootstrap() {
 
   console.log(`Backend API - Sistema de Tickets ejecutandose en el puerto ${port}`);
   console.log(`Endpoints disponibles:`);
-  console.log(`GET /api/tickets/obtener?admin=true|false - Listar todos los tickets`);
-  console.log(`POST /api/tickets/crear - Crear un nuevo ticket`);
-  console.log(`GET /api/tickets/buscar/:id - Obtener un ticket por ID`);
-  console.log(`PATCH /api/tickets/actualizar/:id - Actualizar un ticket por ID`);
-  console.log(`DELETE /api/tickets/eliminar/:id?admin=true|false - Eliminar (soft delete) un ticket por ID`);
+  console.log(`GET /api/tickets/findAll?admin=true|false - Listar todos los tickets`);
+  console.log(`POST /api/tickets/create - Crear un nuevo ticket`);
+  console.log(`GET /api/tickets/find/:id - Obtener un ticket por ID`);
+  console.log(`PATCH /api/tickets/update/:id - Actualizar un ticket por ID`);
+  console.log(`DELETE /api/tickets/delete/:id?admin=true|false - Eliminar (soft delete) un ticket por ID`);
 }
 
 void bootstrap();

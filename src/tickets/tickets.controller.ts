@@ -8,30 +8,30 @@ import { UpdateTicketDto } from './Dto/update-ticket.dto';
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
-  @Post('crear')
+  @Post('create')
   create(@Body() createTicketDto: CreateTicketDto): Promise<Ticket> {
     return this.ticketsService.create(createTicketDto);
   }
 
-  @Get('obtener')
+  @Get('findAll')
   findAll(@Query('admin') admin: string): Promise<Ticket[]> {
     return this.ticketsService.findAll(admin === 'true');
   }
 
-  @Get('buscar/:id')
+  @Get('find/:id')
   findById(@Param('id') id: string): Promise<Partial<Ticket>> {
     return this.ticketsService.findById(id);
   }
-  @Patch('actualizar/:id')
+  @Patch('update/:id')
   update(@Param('id') id: string, @Body() dto: UpdateTicketDto): Promise<Ticket> {
     return this.ticketsService.update(id, dto);
   }
-  @Delete('eliminar/:id')
+  @Delete('delete/:id')
   softDelete(@Param('id') id: string, @Query('admin') admin : string): Promise<boolean>{
     return this.ticketsService.softDelete(id, admin==='true');
   }
 
-    @Get('crear')
+    @Get('create')
   createInfo(){
     return{
       message: "Este endpoint requiere método POST para crear tickets",
@@ -55,17 +55,17 @@ export class TicketsController {
       }
     };
   }
-    @Get('actualizar/:id')
+    @Get('update/:id')
   updateInfo(@Param('id') id: string){
     return{
       message: "Este endpoint requiere método PATCH para actualizar tickets",
       method: "PATCH",
-      url: `/api/tickets/actualizar/${id}`,
+      url: `/api/tickets/update/${id}`,
       instruction: 'Por favor, utilice Postman, curl, o una herramienta para utilizar este endpoint.',
       postmanInstructions: [
         'Abra Postman.',
         'Seleccione el método PATCH.',
-        `Ingrese la URL: /api/tickets/actualizar/${id}`,
+        `Ingrese la URL: /api/tickets/update/${id}`,
         'En el cuerpo de la solicitud, incluya los datos actualizados del ticket en formato JSON.'
       ],
       exampleBody: {
@@ -79,12 +79,12 @@ export class TicketsController {
       }
     };
   }
-    @Get('eliminar/:id')
+    @Get('delete/:id')
   deleteInfo(@Param('id') id: string){
     return{
       message: "Este endpoint requiere método DELETE para eliminar tickets",
       method: "DELETE",
-      url: `/api/tickets/eliminar/${id}?admin=true`,
+      url: `/api/tickets/delete/${id}?admin=true`,
       important: "REQUIERE admin=true para funcionar",
       instruction: 'Por favor, utilice Postman, curl, o una herramienta para utilizar este endpoint.',
       postmanInstructions: [

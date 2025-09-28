@@ -33,18 +33,10 @@ const firstNames = [
     'Rafael', 'Marta', 'Fernando', 'Elena', 'Sergio', 'Silvia', 'Pablo', 'Beatriz'
 ];
 
-const lastNames = [
-    'García', 'Rodríguez', 'González', 'Fernández', 'López', 'Martínez', 'Sánchez',
-    'Pérez', 'Gómez', 'Martín', 'Jiménez', 'Ruiz', 'Hernández', 'Díaz', 'Moreno',
-    'Muñoz', 'Álvarez', 'Romero', 'Alonso', 'Gutiérrez', 'Navarro', 'Torres',
-    'Domínguez', 'Vázquez', 'Ramos', 'Gil', 'Ramírez', 'Serrano', 'Blanco', 'Suárez'
-];
 
 function getRandomName(): string {
     const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-    const lastName1 = lastNames[Math.floor(Math.random() * lastNames.length)];
-    const lastName2 = lastNames[Math.floor(Math.random() * lastNames.length)];
-    return `${firstName} ${lastName1} ${lastName2}`;
+    return `${firstName}`;
 }
 
 function getRandomDate(): Date {
@@ -132,8 +124,6 @@ async function randomSeed(numberOfTickets: number = 50) {
             precioPromedio: Math.round(createdTickets.reduce((sum, t) => sum + t.paid, 0) / createdTickets.length)
         };
 
-        console.log(`Estadísticas: ${stats.total} total, ${stats.activo} activos, ${stats.usado} usados, ${stats.caducado} caducados`);
-        console.log(`Precio promedio: $${stats.precioPromedio}`);
 
     } catch (error) {
         console.error('Error:', error);

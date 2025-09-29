@@ -33,6 +33,41 @@ Sistema de gestión de tickets de metro desarrollado con NestJS, MongoDB y TypeS
 - **Testing:** Jest
 - **Linting:** ESLint + Prettier
 
+## Tecnologías
+
+## Patrón de Diseño Utilizado
+
+Este proyecto implementa el **Patrón de Arquitectura en Capas (Layered Architecture)**, siguiendo principios de **Clean Architecture** y separación de responsabilidades.
+
+### Descripción de las capas
+
+- **Controlador (Controller):**  
+  Expone los endpoints HTTP y recibe las solicitudes del cliente. Valida y transforma los datos de entrada, delegando la lógica de negocio al servicio correspondiente.
+
+- **Servicio (Service):**  
+  Contiene la lógica de negocio principal. Orquesta las operaciones, aplica validaciones y reglas de negocio, y coordina el acceso a los datos.
+
+- **DTOs (Data Transfer Objects):**  
+  Definen la estructura de los datos que se reciben y envían a través de la API, asegurando la validación y el tipado estricto.
+
+- **Entidad (Entity):**  
+  Representa el modelo de dominio del ticket, independiente de la base de datos.
+
+- **Schema:**  
+  Define la estructura y validaciones específicas para la persistencia en MongoDB usando Mongoose.
+
+- **Mapper:**  
+  Separa la lógica de transformación entre DTOs y entidades de dominio.
+
+- **Utilidades:**  
+  Funciones auxiliares para formateo y operaciones comunes.
+
+### Beneficios
+
+- **Separación de responsabilidades:** Cada capa tiene una función clara y desacoplada.
+- **Escalabilidad y mantenibilidad:** Facilita la extensión y el mantenimiento del código.
+- **Testabilidad:** Permite probar cada capa de forma aislada.
+
 ## Instalación y Configuración Completa
 
 ### Prerrequisitos

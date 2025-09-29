@@ -1,15 +1,30 @@
+/**
+ * Controlador principal para endpoints de información y health check
+ * 
+ * @description Proporciona endpoints de estado del sistema y información general
+ * 
+ */
+
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { get } from 'axios';
+
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, @InjectConnection()private readonly connection: Connection,) {}
+  constructor(
+    private readonly appService: AppService, 
+    @InjectConnection() private readonly connection: Connection
+  ) {}
 
+  /**
+   * Endpoint raíz con información general de la API
+   * 
+   * @returns {object} Información básica y endpoints disponibles
+   */
   @Get()
-  getRoot(){
-    return{
+  getRoot() {
+    return {
       message: 'Backend API - Sistema de Tickets',
       version: '1.0.0',
       timestamp: new Date().toISOString(),
@@ -26,8 +41,13 @@ export class AppController {
     }
   }
 
+  /**
+   * Health check endpoint para monitoreo del sistema
+   * 
+   * @returns {object} Estado del servicio, base de datos y métricas
+   */
   @Get('health')
-  getHealth(){
+  getHealth() {
     const dbStatus = this.getDatabaseStatus();
     return {
       status: 'OK',
@@ -40,34 +60,28 @@ export class AppController {
     }
   }
 
-private getDatabaseStatus(): string {
-  const mongoUri = process.env.MONGODB_URI || '';
-  const connectionReady = this.connection.readyState === 1;
-  
-  // Debug temporal
-  console.log('Debug MongoDB URI (first 30 chars):', mongoUri.substring(0, 30));
-  console.log('Connection ready:', connectionReady);
-  console.log('Contains mongodb+srv:', mongoUri.includes('mongodb+srv://'));
-  
-  // Si usa MongoDB Atlas (mongodb+srv)
-  if (mongoUri.includes('mongodb+srv://')) {
-    console.log('Atlas detected!');
-    return connectionReady ? 'Connected (MongoDB Atlas)' : 'Disconnected (Atlas)';
+  /**
+   * Determina el estado de conexión a la base de datos
+   * 
+   * @private
+   * @returns {string} Estado de conexión descriptivo
+   */
+  private getDatabaseStatus(): string {
+    const mongoUri = process.env.MONGODB_URI || '';
+    const connectionReady = this.connection.readyState === 1;
+    
+    if (mongoUri.includes('mongodb+srv://')) {
+      return connectionReady ? 'Connected (MongoDB Atlas)' : 'Disconnected (Atlas)';
+    }
+    
+    if (mongoUri.includes('localhost') || mongoUri.includes('127.0.0.1')) {
+      return connectionReady ? 'Connected (Local)' : 'Disconnected (Local)';
+    }
+    
+    if (mongoUri.includes('mongodb://') && !mongoUri.includes('localhost')) {
+      return connectionReady ? 'Connected (Cloud)' : 'Disconnected (Cloud)';
+    }
+    
+    return connectionReady ? 'Connected' : 'Disconnected';
   }
-  
-  console.log('Atlas NOT detected, using fallback');
-  
-  // Si usa MongoDB local
-  if (mongoUri.includes('localhost') || mongoUri.includes('127.0.0.1')) {
-    return connectionReady ? 'Connected (Local)' : 'Disconnected (Local)';
-  }
-  
-  // Si usa MongoDB en cloud pero no Atlas
-  if (mongoUri.includes('mongodb://') && !mongoUri.includes('localhost')) {
-    return connectionReady ? 'Connected (Cloud)' : 'Disconnected (Cloud)';
-  }
-  
-  // Fallback genérico
-  return connectionReady ? 'Connected' : 'Disconnected';
-}
 }

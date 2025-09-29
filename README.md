@@ -425,7 +425,7 @@ Este proyecto está bajo la Licencia MIT.
 
 ## Autor
 
-**Nicolás** - [GitHub](https://github.com/NicolasD2)
+**Nicolás Diaz Juica, 20.949.349-7** - [GitHub](https://github.com/NicolasD2)
 
 ## Soporte
 
@@ -433,4 +433,3 @@ Para problemas o preguntas:
 
 1. Revisa la sección "Solución de Problemas"
 2. Verifica el health check: `/api/health`
-3. Abre un [Issue](https://github.com/NicolasD2/perla-metro-tickets/issues)

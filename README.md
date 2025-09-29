@@ -68,6 +68,16 @@ Este proyecto implementa el **Patrón de Arquitectura en Capas (Layered Architec
 - **Escalabilidad y mantenibilidad:** Facilita la extensión y el mantenimiento del código.
 - **Testabilidad:** Permite probar cada capa de forma aislada.
 
+## Arquitectura y Contexto
+
+Este microservicio de tickets forma parte de una **arquitectura orientada a servicios (SOA)** y está diseñado para integrarse con una **API principal** (main API) que gestiona la autenticación, autorización y orquestación de los distintos servicios del sistema Perla Metro.
+- **Comunicación entre servicios:**  
+  El microservicio de tickets expone endpoints REST y consume otros servicios (como el de usuarios) para obtener información adicional (por ejemplo, nombre del pasajero).
+- **Responsabilidad:**  
+  Este servicio se encarga únicamente de la gestión y lógica de los tickets de metro.
+
+
+
 ## Instalación y Configuración Completa
 
 ### Prerrequisitos
